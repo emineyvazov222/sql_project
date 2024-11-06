@@ -49,7 +49,8 @@ CREATE TABLE IF NOT EXISTS comments
     updated_at   TIMESTAMP(5) NOT NULL DEFAULT NOW(),
     created_by   BIGINT CHECK (created_by > 0),
     updated_by   BIGINT CHECK (updated_by > 0)
-    post_id      BIGINT REFERENCES posts (post_id) ON DELETE CASCADE
+    post_id      BIGINT REFERENCES posts (post_id) ON DELETE CASCADE,
+    user_id      BIGINT REFERENCES users (id) ON DELETE CASCADE
     );
 
 INSERT INTO comments (comment_text, created_by, updated_by, post_id)
