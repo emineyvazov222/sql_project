@@ -1,3 +1,15 @@
+--First, the docker engine must be running
+
+--How to create container in Docker with cmd:
+--docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+
+--To access the contents of this container:
+--docker exec -it container_id bash
+
+--To access PsotgreSql:
+--psql -U postgres
+
+
 CREATE TABLE IF NOT EXISTS users
 (
     id           BIGSERIAL PRIMARY KEY,
@@ -27,8 +39,8 @@ CREATE TABLE IF NOT EXISTS posts
     history_date     DATE,
     created_at       TIMESTAMP(5) NOT NULL DEFAULT NOW(),
     updated_at       TIMESTAMP(5) NOT NULL DEFAULT NOW(),
-    created_by       BIGINT REFERENCES users (id),
-    updated_by       BIGINT REFERENCES users (id),
+    created_by   BIGINT REFERENCES users (id),
+    updated_by   BIGINT REFERENCES users (id)
     user_id          BIGINT REFERENCES users (id) ON DELETE CASCADE
     );
 
@@ -48,8 +60,9 @@ CREATE TABLE IF NOT EXISTS comments
     created_at   TIMESTAMP(5) NOT NULL DEFAULT NOW(),
     updated_at   TIMESTAMP(5) NOT NULL DEFAULT NOW(),
     created_by   BIGINT REFERENCES users (id),
-    updated_by   BIGINT REFERENCES users (id),
-    post_id      BIGINT REFERENCES posts (post_id) ON DELETE CASCADE
+    updated_by   BIGINT REFERENCES users (id)
+    post_id      BIGINT REFERENCES posts (post_id) ON DELETE CASCADE,
+    user_id      BIGINT REFERENCES users (id) ON DELETE CASCADE
     );
 
 INSERT INTO comments (comment_text, created_by, updated_by, post_id)
@@ -68,8 +81,8 @@ CREATE TABLE IF NOT EXISTS likes
     comment_id BIGINT REFERENCES comments (comment_id) ON DELETE CASCADE,
     created_at TIMESTAMP(3) NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP(3) NOT NULL DEFAULT NOW(),
-    created_by BIGINT REFERENCES users(id) ON DELETE CASCADE,
-    updated_by BIGINT REFERENCES users(id) ON DELETE CASCADE
+    created_by   BIGINT REFERENCES users (id),
+    updated_by   BIGINT REFERENCES users (id)
     );
 
 INSERT INTO likes (user_id, post_id,comment_id,created_by,updated_by)
@@ -78,7 +91,7 @@ INSERT INTO likes (user_id, post_id, comment_id, created_by, updated_by)
 VALUES (2, NULL, 1, 2, 2);
 
 
---User-ların hər bir Postu ilə birlikdə göstərilməsi
+--Showing users with each Post
 
 SELECT u.id         AS user_id,
        u.user_name,
@@ -91,7 +104,7 @@ FROM users u
      posts p ON u.id = p.user_id;
 
 
---User-ların hər bir Comment -i ilə birlikdə göstərilməsi
+--Displaying users with each Comment
 
 SELECT u.id         AS user_id,
        u.user_name,
@@ -104,7 +117,7 @@ FROM users u
          INNER JOIN comments c on u.id = c.created_by;
 
 
---User-lar, onların Postları və postların Comment-lerinin göstərilməsi
+--Displaying users, their posts and their comments
 
 SELECT
     u.id AS user_id,
@@ -124,7 +137,7 @@ FROM
 
 
 
---Hər Bir Postun Comment-leri ilə birlikdə göstərilməsi
+--Showing each post with its comments
 
 SELECT
     p.post_id,
@@ -136,10 +149,6 @@ FROM
     posts p
         INNER JOIN
     comments c ON p.post_id = c.post_id;
-
-
-
-
 
 
 
