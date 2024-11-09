@@ -9,9 +9,9 @@ import java.sql.Statement;
 
 public class JDBCApp {
 
-    private static final String url = "jdbc:postgresql://localhost:3333/postgres";
-    private static final String user = "postgres";
-    private static final String password = "emin563";
+    private static final String URL = "jdbc:postgresql://localhost:3333/postgres";
+    private static final String USER = "postgres";
+    private static final String PASSWORD = "emin563";
 
     public static void main(String[] args) throws SQLException {
 
@@ -32,32 +32,32 @@ public class JDBCApp {
 
     private static Connection getConnection() throws SQLException {
 
-        return DriverManager.getConnection(url, user, password);
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
     private static void createTable(Connection con) throws SQLException {
 
         Statement stmt = con.createStatement();
 
-        stmt.executeUpdate(getTableForUsers());
+        stmt.executeUpdate(getQueryForUsers());
         System.out.println("Users table created");
 
 
-        stmt.executeUpdate(getTableForPosts());
+        stmt.executeUpdate(getQueryForPosts());
         System.out.println("Posts table created");
 
 
-        stmt.executeUpdate(getTableForComments());
+        stmt.executeUpdate(getQueryForComments());
         System.out.println("Comments table created");
 
 
-        stmt.executeUpdate(getTableForLikes());
+        stmt.executeUpdate(getQueryForLikes());
         System.out.println("Likes table created");
 
 
     }
 
-    private static String getTableForUsers() {
+    private static String getQueryForUsers() {
 
         return "CREATE TABLE IF NOT EXISTS users ("
                 + "id           BIGSERIAL PRIMARY KEY,"
@@ -72,7 +72,7 @@ public class JDBCApp {
 
     }
 
-    private static String getTableForPosts() {
+    private static String getQueryForPosts() {
 
         return "CREATE TABLE IF NOT EXISTS posts ("
                 + "post_id          BIGSERIAL PRIMARY KEY,"
@@ -85,7 +85,7 @@ public class JDBCApp {
                 + "user_id          BIGINT REFERENCES users (id) ON DELETE CASCADE)";
     }
 
-    private static String getTableForComments() {
+    private static String getQueryForComments() {
 
         return "CREATE TABLE IF NOT EXISTS comments ("
                 + "comment_id          BIGSERIAL PRIMARY KEY,"
@@ -101,7 +101,7 @@ public class JDBCApp {
 
     }
 
-    private static String getTableForLikes() {
+    private static String getQueryForLikes() {
         return "CREATE TABLE IF NOT EXISTS likes ("
                 + "like_id    BIGSERIAL PRIMARY KEY,"
                 + "user_id    BIGINT       NOT NULL REFERENCES users (id) ON DELETE CASCADE,"
