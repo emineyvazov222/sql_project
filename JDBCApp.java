@@ -1,6 +1,11 @@
 package org.spring;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class JDBCApp {
 
@@ -34,25 +39,25 @@ public class JDBCApp {
 
         Statement stmt = con.createStatement();
 
-        stmt.executeUpdate(createTableForUsers());
+        stmt.executeUpdate(tableForUsers());
         System.out.println("Users table created");
 
 
-        stmt.executeUpdate(createTableForPosts());
+        stmt.executeUpdate(tableForPosts());
         System.out.println("Posts table created");
 
 
-        stmt.executeUpdate(createTableForComments());
+        stmt.executeUpdate(tableForComments());
         System.out.println("Comments table created");
 
 
-        stmt.executeUpdate(createTableForLikes());
+        stmt.executeUpdate(tableForLikes());
         System.out.println("Likes table created");
 
 
     }
 
-    private static String createTableForUsers() {
+    private static String tableForUsers() {
 
         return "CREATE TABLE IF NOT EXISTS users ("
                 + "id           BIGSERIAL PRIMARY KEY,"
@@ -67,7 +72,7 @@ public class JDBCApp {
 
     }
 
-    private static String createTableForPosts() {
+    private static String tableForPosts() {
 
         return "CREATE TABLE IF NOT EXISTS posts ("
                 + "post_id          BIGSERIAL PRIMARY KEY,"
@@ -80,7 +85,7 @@ public class JDBCApp {
                 + "user_id          BIGINT REFERENCES users (id) ON DELETE CASCADE)";
     }
 
-    private static String createTableForComments() {
+    private static String tableForComments() {
 
         return "CREATE TABLE IF NOT EXISTS comments ("
                 + "comment_id          BIGSERIAL PRIMARY KEY,"
@@ -96,7 +101,7 @@ public class JDBCApp {
 
     }
 
-    private static String createTableForLikes() {
+    private static String tableForLikes() {
         return "CREATE TABLE IF NOT EXISTS likes ("
                 + "like_id    BIGSERIAL PRIMARY KEY,"
                 + "user_id    BIGINT       NOT NULL REFERENCES users (id) ON DELETE CASCADE,"
