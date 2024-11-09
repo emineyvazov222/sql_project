@@ -39,25 +39,25 @@ public class JDBCApp {
 
         Statement stmt = con.createStatement();
 
-        stmt.executeUpdate(tableForUsers());
+        stmt.executeUpdate(getTableForUsers());
         System.out.println("Users table created");
 
 
-        stmt.executeUpdate(tableForPosts());
+        stmt.executeUpdate(getTableForPosts());
         System.out.println("Posts table created");
 
 
-        stmt.executeUpdate(tableForComments());
+        stmt.executeUpdate(getTableForComments());
         System.out.println("Comments table created");
 
 
-        stmt.executeUpdate(tableForLikes());
+        stmt.executeUpdate(getTableForLikes());
         System.out.println("Likes table created");
 
 
     }
 
-    private static String tableForUsers() {
+    private static String getTableForUsers() {
 
         return "CREATE TABLE IF NOT EXISTS users ("
                 + "id           BIGSERIAL PRIMARY KEY,"
@@ -72,7 +72,7 @@ public class JDBCApp {
 
     }
 
-    private static String tableForPosts() {
+    private static String getTableForPosts() {
 
         return "CREATE TABLE IF NOT EXISTS posts ("
                 + "post_id          BIGSERIAL PRIMARY KEY,"
@@ -85,7 +85,7 @@ public class JDBCApp {
                 + "user_id          BIGINT REFERENCES users (id) ON DELETE CASCADE)";
     }
 
-    private static String tableForComments() {
+    private static String getTableForComments() {
 
         return "CREATE TABLE IF NOT EXISTS comments ("
                 + "comment_id          BIGSERIAL PRIMARY KEY,"
@@ -101,7 +101,7 @@ public class JDBCApp {
 
     }
 
-    private static String tableForLikes() {
+    private static String getTableForLikes() {
         return "CREATE TABLE IF NOT EXISTS likes ("
                 + "like_id    BIGSERIAL PRIMARY KEY,"
                 + "user_id    BIGINT       NOT NULL REFERENCES users (id) ON DELETE CASCADE,"
